@@ -1,0 +1,50 @@
+{{ template "partials/top" .page }}
+
+<hr>
+
+<ul id="navlinks">
+  <li>[<a href="/{{ .page.Board.Name }}">Return</a>]</li>
+  {{ template "partials/post_nav" .page }}
+  <li>[<a href="#bottom" id="top">Bottom</a>]</li>
+</ul>
+
+<hr>
+
+{{ template "partials/posts" .page }}
+
+<hr>
+
+<table id="threadfooter"><tr>
+  <tr>
+    <td>
+      <ul id="navlinks">
+        <li>[<a href="/{{ .page.Board.Name }}">Return</a>]</li>
+        {{ template "partials/post_nav" .page }}
+        <li>[<a href="#top" id="bottom">Top</a>]</li>
+        <li><input id="autoreload-checkbox" type="checkbox" onclick="autoTimer()"> Auto refresh <span id="autoreload-countdown" style="visibility: hidden;">0</span></li>
+      </ul>
+    </td>
+
+    {{ if gt (len .page.Posts) 0 }}
+    {{ if eq (index .page.Posts 0).Type "Note" }}
+    <td style="text-align: center;">
+      <span>[<a id="reply-content" href="javascript:quote('{{ .page.Board.Actor.Id }}', '{{ (index .page.Posts 0).Id }}', 'reply')">Post a Reply</a>]</span>
+    </td>
+    {{ end }}
+
+    <td>
+      {{ $replies := (index .page.Posts 0).Replies }}
+      <span id="threadStats" data-total="{{ $replies.TotalItems }}" data-imgs="{{ $replies.TotalImgs }}">{{ $replies.TotalItems }} / {{ $replies.TotalImgs }}</span>
+    </td>
+    {{ end }}
+  </tr>
+</table>
+
+<hr>
+
+{{ template "partials/bottom" .page }}
+{{ template "partials/footer" .page }}
+{{ template "partials/general_scripts" .page }}
+{{ template "partials/post_scripts" .page }}
+
+<script src="/static/js/timer.js"></script>
